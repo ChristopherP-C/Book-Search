@@ -13,10 +13,6 @@
 
 -[License](#license)
 
-
-  ## Installation
-  undefined
-
   ## Usage
   On accessing the website users are able to search for and view books, however to save them a user must first sign up or login to their account
 

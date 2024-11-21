@@ -31,12 +31,12 @@ const resolvers = {
     Query: {
         me: async (_parent: any, _args: any, context: any) => {
             if (context.user) {
-              return await User.findOne({ _id: context.user._id });
+              return await User.findOne({ _id: context.user._id }).populate('savedBooks');
             }
             throw AuthenticationError;
           },
     },
-    Mutaion: {
+    Mutation: {
         login: async (_parent: any, { email, password }: LoginUserArgs) => {
             const user = await User.findOne({ email });
             if (!user) {
@@ -55,6 +55,7 @@ const resolvers = {
             return { token, user };
         },
         saveBook: async (_parent: any, { userId, book }: AddBookArgs, context: any) => {
+            try {
             if (context.user) {
                 return await User.findOneAndUpdate(
                     { _id: userId },
@@ -63,6 +64,9 @@ const resolvers = {
                 );
             }
             throw AuthenticationError;
+        } catch (err) {
+            return console.error(err);
+        }
         },
         removeBook: async (_parent: any, { book }: RemoveBookArgs, context: any) => {
             if (context.user) {

@@ -20,6 +20,19 @@
   ## Usage
   On accessing the website users are able to search for and view books, however to save them a user must first sign up or login to their account
 
+![search books](https://github.com/user-attachments/assets/c77da9ef-d579-49ba-8616-9aabf691d8f1)
+
+
+
+![lotr search](https://github.com/user-attachments/assets/d6888938-d37f-4c62-a227-b8831080a862)
+
+
+
+![book sign-up](https://github.com/user-attachments/assets/7740555c-30f5-4c17-9165-6a86461e205a)
+
+
+  
+
   ## Credits
   starter code supplied by the University of Minnesota Bootcamp program. MongoDB, Atlas, Apollo server was used
 

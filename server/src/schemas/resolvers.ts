@@ -17,15 +17,6 @@ interface LoginUserArgs {
     password: string;
   }
 
-interface AddBookArgs {
-    userId: mongoose.Types.ObjectId;
-    book: BookDocument;
-}
-
-interface RemoveBookArgs {
-    userId: mongoose.Types.ObjectId;
-    book: BookDocument;
-}
 
 const resolvers = {
     Query: {
@@ -54,7 +45,7 @@ const resolvers = {
             const token = signToken(user.username, user.email, user._id);
             return { token, user };
         },
-        saveBook: async (_parent: any, { userId, bookData }: AddBookArgs, context: any) => {
+        saveBook: async (_parent: any, { bookData }, context: any) => {
             try {
                 console.log(bookData);
                 if (context.user) {

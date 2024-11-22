@@ -1,4 +1,6 @@
-const typeDefs = `
+import gql from 'graphql-tag';
+
+const typeDefs = gql`
     type User {
     _id: ID!
     username: String!
@@ -14,7 +16,6 @@ const typeDefs = `
     description: String!
     bookId: String!
     image: String
-    link: String
     title: String!
     }
 
@@ -32,7 +33,6 @@ const typeDefs = `
     description: String!
     bookId: String!
     image: String
-    link: String
     title: String!
     }
 

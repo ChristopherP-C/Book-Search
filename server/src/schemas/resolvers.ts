@@ -1,6 +1,4 @@
 import { User } from '../models/index.js';
-import { BookDocument } from '../models/Book.js';
-import mongoose from 'mongoose';
 import { signToken, AuthenticationError } from '../services/auth.js';
 
 
@@ -45,7 +43,7 @@ const resolvers = {
             const token = signToken(user.username, user.email, user._id);
             return { token, user };
         },
-        saveBook: async (_parent: any, { bookData }, context: any) => {
+        saveBook: async (_parent: any, { bookData }: any, context: any) => {
             try {
                 console.log(bookData);
                 if (context.user) {
@@ -64,7 +62,7 @@ const resolvers = {
             return console.error(err);
         }
         },
-        removeBook: async (_parent: any, { bookId }, context: any) => {
+        removeBook: async (_parent: any, { bookId }: any, context: any) => {
             try{
             console.log(bookId);
             console.log(context.user);

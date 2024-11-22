@@ -54,12 +54,33 @@ const resolvers = {
             const token = signToken(user.username, user.email, user._id);
             return { token, user };
         },
-        saveBook: async (_parent: any, { userId, book }: AddBookArgs, context: any) => {
+        saveBook: async (_parent: any, { userId, bookData }: AddBookArgs, context: any) => {
             try {
+                console.log(bookData);
+                if (context.user) {
+                console.log('Hello World');
+                console.log(bookData);
+                console.log('resolver')
+                return await User.findOneAndUpdate(
+                    { _id: context.user._id },
+                    { $addToSet: { savedBooks: bookData } },
+                    { new: true }
+                );
+                console.log(savedBooks);
+            }
+            throw AuthenticationError;
+        } catch (err) {
+            return console.error(err);
+        }
+        },
+        removeBook: async (_parent: any, { bookId }, context: any) => {
+            try{
+            console.log(bookId);
+            console.log(context.user);
             if (context.user) {
                 return await User.findOneAndUpdate(
-                    { _id: userId },
-                    { $addToSet: { savedBooks: book } },
+                    { _id: context.user._id },
+                    { $pull: { savedBooks: { bookId } } },
                     { new: true }
                 );
             }
@@ -67,16 +88,6 @@ const resolvers = {
         } catch (err) {
             return console.error(err);
         }
-        },
-        removeBook: async (_parent: any, { book }: RemoveBookArgs, context: any) => {
-            if (context.user) {
-                return await User.findOneAndUpdate(
-                    { _id: context.user._id },
-                    { $pull: { savedBooks: book } },
-                    { new: true }
-                );
-            }
-            throw AuthenticationError;
         },
     },
 };

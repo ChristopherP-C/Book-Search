@@ -11,32 +11,31 @@ import { Navigate, useParams } from 'react-router-dom';
 import { REMOVE_BOOK } from '../utils/mutations';
 
 const SavedBooks = () => {
+  
   const [userData, setUserData] = useState<User>({
     username: '',
     email: '',
-    password: '',
     savedBooks: [],
   });
-
+  
   // use this to determine if `useEffect()` hook needs to run again
-  const userDataLength = Object.keys(userData).length;
-  const { username: userParam } = useParams();
+  // const userDataLength = Object.keys(userData).length;
 
-  const { loading, data } = useQuery(GET_ME, {
-    variables: { username: userParam },
-  });
-
+  const { loading, data } = useQuery(GET_ME);
+  //   , {
+  //   variables: { userId: userId },
+  // });
+  
   const user = data?.me || {};
-
-  if (Auth.loggedIn() && (Auth.getProfile() as any).data.username === userParam) {
-    return <Navigate to='/saved' />;
-  }
-
-  if (loading) {
-    return <h2>LOADING...</h2>;
-  }
-
-  if (!user?.username) {
+  
+  const [deleteBook, { error }] = useMutation(REMOVE_BOOK, {
+    refetchQueries: [
+      GET_ME,
+      `me`
+    ]
+  });
+  
+  if (!Auth.loggedIn()) {
     return (
       <h4>
         You need to be logged in to see this. Use the navigation links above to
@@ -44,44 +43,22 @@ const SavedBooks = () => {
       </h4>
     );
   }
-  // useEffect(() => {
-  //   const getUserData = async () => {
-  //     try {
-  //       const token = Auth.loggedIn() ? Auth.getToken() : null;
 
-  //       if (!token) {
-  //         return false;
-  //       }
-
-  //       const response = await getMe(token);
-
-  //       if (!response.ok) {
-  //         throw new Error('something went wrong!');
-  //       }
-
-  //       const user = await response.json();
-  //       setUserData(user);
-  //     } catch (err) {
-  //       console.error(err);
-  //     }
-  //   };
-
-  //   getUserData();
-  // }, [userDataLength]);
-
-  // create function that accepts the book's mongo _id value as param and deletes the book from the database
-
-  const [deleteBook, { error }] = useMutation(REMOVE_BOOK);
-
+  if (loading) {
+    return <h2>LOADING...</h2>;
+  }
 
   const handleDeleteBook = async (bookId: string) => {
     const token = Auth.loggedIn() ? Auth.getToken() : null;
 
     if (!token) {
+      cosole.log('No token found!');
       return false;
     }
 
     try {
+      console.log('bookId:', bookId);
+      console.log('token:', token);
       await deleteBook({
         variables: { bookId },
       });
@@ -90,45 +67,36 @@ const SavedBooks = () => {
         throw new Error('something went wrong!');
       }
 
-      setUserData({
-        ...userData,
-        savedBooks: userData.savedBooks.filter((savedBook) => savedBook.bookId !== bookId),
-      });
       removeBookId(bookId);
+      // setUserData({
+      //   ...user,
+      //   savedBooks: userData.savedBooks.filter((savedBook) => savedBook.bookId !== bookId),
+      // });
     } catch (err) {
       console.error(err);
     }
-    // if (!token) {
-    //   return false;
-    // }
-
-    // try {
-    //   const response = await deleteBook(bookId, token);
-
-    //   if (!response.ok) {
-    //     throw new Error('something went wrong!');
-    //   }
-
-    //   const updatedUser = await response.json();
-    //   setUserData(updatedUser);
-    //   upon success, remove book's id from localStorage
-    //   removeBookId(bookId);
-    // } catch (err) {
-    //   console.error(err);
-    // }
   };
 
+  //const { userId } = useParams();
+
+
+
+  // if (Auth.loggedIn() && (Auth.getProfile() as any).data.username === userId) {
+  //   return <Navigate to='/saved' />;
+  // }
+
+
   // if data isn't here yet, say so
-  if (!userDataLength) {
-    return <h2>LOADING...</h2>;
-  }
+  // if (!userDataLength) {
+  //   return <h2>LOADING...</h2>;
+  // }
 
   return (
     <>
       <div className='text-light bg-dark p-5'>
         <Container>
-          {userData.username ? (
-            <h1>Viewing {userData.username}'s saved books!</h1>
+          {user.username ? (
+            <h1>Viewing {user.username}'s saved books!</h1>
           ) : (
             <h1>Viewing saved books!</h1>
           )}
@@ -136,14 +104,14 @@ const SavedBooks = () => {
       </div>
       <Container>
         <h2 className='pt-5'>
-          {userData.savedBooks.length
-            ? `Viewing ${userData.savedBooks.length} saved ${
-                userData.savedBooks.length === 1 ? 'book' : 'books'
+          {user.savedBooks.length
+            ? `Viewing ${user.savedBooks.length} saved ${
+                user.savedBooks.length === 1 ? 'book' : 'books'
               }:`
             : 'You have no saved books!'}
         </h2>
         <Row>
-          {userData.savedBooks.map((book) => {
+          {user.savedBooks.map((book) => {
             return (
               <Col md='4'>
                 <Card key={book.bookId} border='dark'>

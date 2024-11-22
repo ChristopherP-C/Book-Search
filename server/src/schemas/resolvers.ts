@@ -55,7 +55,6 @@ const resolvers = {
                     { $addToSet: { savedBooks: bookData } },
                     { new: true }
                 );
-                console.log(savedBooks);
             }
             throw AuthenticationError;
         } catch (err) {

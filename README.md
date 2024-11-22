@@ -16,6 +16,10 @@
   ## Usage
   On accessing the website users are able to search for and view books, however to save them a user must first sign up or login to their account
 
+  
+==========================================================================================
+==========================================================================================
+
 ![search books](https://github.com/user-attachments/assets/c77da9ef-d579-49ba-8616-9aabf691d8f1)
 
 
@@ -25,6 +29,35 @@
 
 
 ![book sign-up](https://github.com/user-attachments/assets/7740555c-30f5-4c17-9165-6a86461e205a)
+
+==========================================================================================
+==========================================================================================
+
+
+
+Users are able to view saved books and their details, as well as able to delete the book from thei saved list
+
+
+==========================================================================================
+==========================================================================================
+
+
+
+![saved books](https://github.com/user-attachments/assets/1a4a56bf-78e1-4dee-afb2-abe4dc7595e0)
+
+
+
+![delete book](https://github.com/user-attachments/assets/96e7bd9c-12da-4b2e-9faa-fcffd7d85038)
+
+
+==========================================================================================
+==========================================================================================
+
+
+
+please visit the deployed site here => https://book-search-jc8v.onrender.com
+
+
 
 
   
